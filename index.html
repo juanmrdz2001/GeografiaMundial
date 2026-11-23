@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Geografía Mundial v2</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <main>
+            <header>
+                <h1>🌎 Geografía Mundial</h1>
+                <p>Encuentra países y capitales · 197 países</p>
+            </header>
+            <section class="panel">
+                <div class="stats">
+                    <span id="level">Cargando...</span>
+                    <span id="round"></span>
+                    <div class="vidas-contenedor">
+                        <span id="lives">❤️❤️❤️</span>
+                    </div>
+                    <span id="score">0 puntos</span>
+                </div>
+                <h2 id="question">Preparando preguntas...</h2>
+                <p id="limit"></p>
+                <div id="map"></div>
+                <div id="feedback" aria-live="polite">Cargando mapa...</div>
+                <div class="actions">
+                    <button id="next" disabled>Siguiente pregunta</button>
+                    <button id="restart">Reiniciar partida</button>
+                </div>
+            </section>
+            <footer>Necesitas internet para cargar el mapa y los datos del juego desde localhost o GitHub Pages. El récord se guarda en este navegador.</footer>
+        </main>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="app.js"></script>
+    </body>
+    </html>

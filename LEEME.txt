@@ -1,0 +1,5 @@
+Geografía Mundial v2
+Copiar index.html, style.css, app.js y paises.json en la misma carpeta. Abrir index.html con Live Server.
+El mapa usa CARTO light_nolabels, sin nombres.
+La distancia de países es al punto de referencia del Excel, NO a la frontera real.
+Antigua y Barbuda se estableció en grado 3 según la corrección confirmada.
