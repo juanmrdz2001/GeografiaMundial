@@ -395,3 +395,14 @@ footer { text-align: center; padding: 18px; font-size: .85rem; }
   .stats > :last-child { flex: 0 0 130px; }
 
 }
+/* Ranking mundial */
+.ranking-panel { background:#182644; border:1px solid #334665; border-radius:14px; padding:14px; margin:14px 0; text-align:center; }
+.ranking-panel input { background:#263a5b; color:#eef5ff; border:1px solid #3a5379; border-radius:8px; padding:12px; margin:6px; max-width:100%; }
+.ranking-panel input::placeholder { color:#aab9d4; }
+#estado-ranking { color:#b8d2ff; font-size:14px; }
+#tabla-ranking { margin-top:12px; overflow-x:auto; }
+#tabla-ranking table { width:100%; border-collapse:collapse; margin-top:10px; }
+#tabla-ranking th, #tabla-ranking td { padding:9px; border-bottom:1px solid #334665; text-align:center; overflow-wrap:anywhere; }
+#tabla-ranking th { background:#263a5b; }
+#tabla-ranking td:nth-child(3) { color:#86efac; font-weight:700; }
+[hidden] { display:none !important; }

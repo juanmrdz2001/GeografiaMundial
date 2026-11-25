@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Geografía Mundial v2</title>
+        <title>Geografía Mundial v3</title>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
         <link rel="stylesheet" href="style.css">
     </head>
@@ -23,6 +23,19 @@
   gtag('config', 'G-G4M6NY4GVC');
 </script>
 
+            <section class="ranking-panel">
+                <label for="jugador">Nombre o apodo público:</label>
+                <input id="jugador" maxlength="30" autocomplete="off" placeholder="Tu apodo">
+                <button id="ver-ranking" type="button">🏆 Ranking mundial</button>
+                <p id="estado-ranking" role="status">Escribe tu apodo para participar.</p>
+                <button id="reintentar-ranking" hidden type="button">Reintentar guardar</button>
+                <div id="tabla-ranking" hidden>
+                    <button id="ranking-mensual">Mensual</button>
+                    <button id="ranking-historico">Histórico</button>
+                    <h2 id="titulo-ranking"></h2>
+                    <table><thead><tr><th>Pos.</th><th>Jugador</th><th>Puntos</th><th>Etapa</th></tr></thead><tbody id="filas-ranking"></tbody></table>
+                </div>
+            </section>
             <section class="panel">
                 <div class="stats">
                     <span id="level">Cargando...</span>
@@ -41,9 +54,9 @@
                     <button id="restart">Reiniciar partida</button>
                 </div>
             </section>
-            <footer>Necesitas internet para cargar el mapa y los datos del juego desde localhost o GitHub Pages. El récord se guarda en este navegador.</footer>
+            <footer>Necesitas internet para cargar el mapa y los datos del juego desde localhost o GitHub Pages. El récord local se guarda en este navegador. El ranking publica tu apodo y puntuación.</footer>
         </main>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <script src="app.js"></script>
+        <script type="module" src="app.js"></script>
     </body>
     </html>

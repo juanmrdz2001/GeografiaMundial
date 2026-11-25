@@ -1,3 +1,4 @@
+import { guardarResultado, consultarRanking } from './firebase.js';
 'use strict';
 
  
@@ -495,6 +496,7 @@ function finalizar(mensaje) {
     $('feedback').textContent = 'Pulsa «Reiniciar partida» para jugar otra vez.';
 
     actualizarMarcadores();
+    registrarResultado();
 
 }
 
@@ -793,3 +795,80 @@ $('restart').addEventListener('click', () => {
 });
 
 iniciar();
+
+// Ranking independiente de Imperio Hotelero.
+const nombreInput = $('jugador');
+try { nombreInput.value = localStorage.getItem('geografiaApodo') || ''; } catch {}
+nombreInput.addEventListener('change', () => {
+    try { localStorage.setItem('geografiaApodo', nombreInput.value.trim()); } catch {}
+});
+let pendiente = null;
+let guardando = false;
+function registrarResultado() {
+    pendiente = { puntos, etapa: Math.min(etapa, 24), aciertos,
+        mes: new Date().toISOString().slice(0, 7) };
+    enviarResultado();
+}
+async function enviarResultado() {
+    if (!pendiente || guardando) return;
+    const nombre = nombreInput.value.trim();
+    if (!nombre) {
+        $('estado-ranking').textContent = 'Escribe tu apodo y pulsa Reintentar guardar.';
+        $('reintentar-ranking').hidden = false;
+        return;
+    }
+    const resultado = pendiente;
+    guardando = true;
+    $('estado-ranking').textContent = 'Guardando puntuación...';
+    try {
+        await guardarResultado(nombre, resultado);
+        if (pendiente === resultado) pendiente = null;
+        $('estado-ranking').textContent = 'Puntuación registrada. Se conserva tu mejor resultado.';
+    } catch (error) {
+        console.error(error);
+        $('estado-ranking').textContent = 'No se pudo guardar. Puedes reintentar.';
+    } finally {
+        guardando = false;
+        $('reintentar-ranking').hidden = !pendiente;
+    }
+}
+$('reintentar-ranking').addEventListener('click', enviarResultado);
+let consulta = 0;
+async function mostrarRanking(historico = false) {
+    const turno = ++consulta;
+    $('tabla-ranking').hidden = false;
+    $('titulo-ranking').textContent = historico ? 'Ranking histórico' : 'Ranking mensual (UTC)';
+    const cuerpo = $('filas-ranking');
+    cuerpo.replaceChildren();
+    const mensaje = texto => {
+        const fila = cuerpo.insertRow();
+        const celda = fila.insertCell();
+        celda.colSpan = 4;
+        celda.textContent = texto;
+    };
+    mensaje('Cargando...');
+    try {
+        const lista = await consultarRanking(historico);
+        if (turno !== consulta) return;
+        cuerpo.replaceChildren();
+        if (!lista.length) mensaje('Todavía no hay puntuaciones.');
+        lista.forEach((r, i) => {
+            const fila = cuerpo.insertRow();
+            [i + 1, r.nombre, Number(r.puntos).toLocaleString('es-MX'), r.etapa]
+                .forEach(valor => { fila.insertCell().textContent = String(valor ?? ''); });
+        });
+    } catch (error) {
+        if (turno !== consulta) return;
+        console.error(error);
+        cuerpo.replaceChildren();
+        mensaje('No se pudo consultar el ranking. Intenta de nuevo.');
+    }
+}
+$('ver-ranking').addEventListener('click', () => {
+    if (!$('tabla-ranking').hidden) {
+        consulta++;
+        $('tabla-ranking').hidden = true;
+    } else mostrarRanking();
+});
+$('ranking-mensual').addEventListener('click', () => mostrarRanking());
+$('ranking-historico').addEventListener('click', () => mostrarRanking(true));
