@@ -1,0 +1,107 @@
+{
+  "au": [
+    {
+      "archivo": "au01.jpg",
+      "nombre": "Ópera de Sídney",
+      "ciudad": "Sídney"
+    }
+  ],
+  "br": [
+    {
+      "archivo": "br01.jpg",
+      "nombre": "Cristo Redentor",
+      "ciudad": "Río de Janeiro"
+    }
+  ],
+  "ca": [
+    {
+      "archivo": "ca01.jpg",
+      "nombre": "Cataratas del Niágara",
+      "ciudad": "Niagara Falls (frontera con Estados Unidos)"
+    }
+  ],
+  "cn": [
+    {
+      "archivo": "cn01.jpg",
+      "nombre": "Gran Muralla China",
+      "ciudad": "Alrededores de Pekín"
+    }
+  ],
+  "eg": [
+    {
+      "archivo": "eg01.jpg",
+      "nombre": "Pirámides de Guiza",
+      "ciudad": "Guiza"
+    }
+  ],
+  "es": [
+    {
+      "archivo": "es01.jpg",
+      "nombre": "Basílica de la Sagrada Familia",
+      "ciudad": "Barcelona"
+    }
+  ],
+  "fr": [
+    {
+      "archivo": "fr01.jpg",
+      "nombre": "Torre Eiffel",
+      "ciudad": "París"
+    }
+  ],
+  "gr": [
+    {
+      "archivo": "gr01.jpg",
+      "nombre": "Partenón",
+      "ciudad": "Atenas"
+    }
+  ],
+  "in": [
+    {
+      "archivo": "in01.jpg",
+      "nombre": "Taj Mahal",
+      "ciudad": "Agra"
+    }
+  ],
+  "it": [
+    {
+      "archivo": "it01.jpg",
+      "nombre": "Coliseo Romano",
+      "ciudad": "Roma"
+    }
+  ],
+  "jo": [
+    {
+      "archivo": "jo01.jpg",
+      "nombre": "Petra",
+      "ciudad": "Petra"
+    }
+  ],
+  "jp": [
+    {
+      "archivo": "jp01.jpg",
+      "nombre": "Monte Fuji",
+      "ciudad": ""
+    }
+  ],
+  "mx": [
+    {
+      "archivo": "mx01.jpg",
+      "nombre": "Chichén Itzá",
+      "ciudad": "Yucatán"
+    }
+  ],
+  "pe": [
+    {
+      "archivo": "pe01.jpg",
+      "nombre": "Machu Picchu",
+      "ciudad": "Cusco"
+    }
+  ],
+  "us": [
+    {
+      "archivo": "us01.jpg",
+      "nombre": "Estatua de la Libertad",
+      "ciudad": "Nueva York"
+    }
+  ]
+}

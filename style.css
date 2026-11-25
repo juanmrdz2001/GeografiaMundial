@@ -406,3 +406,7 @@ footer { text-align: center; padding: 18px; font-size: .85rem; }
 #tabla-ranking th { background:#263a5b; }
 #tabla-ranking td:nth-child(3) { color:#86efac; font-weight:700; }
 [hidden] { display:none !important; }
+
+/* Fotografías de lugares emblemáticos */
+#panel-foto { text-align: center; margin: 12px auto; }
+#imagen-lugar { display: block; width: min(100%, 360px); height: auto; aspect-ratio: 3 / 2; object-fit: contain; margin: auto; border: 2px solid #3a5379; border-radius: 10px; }

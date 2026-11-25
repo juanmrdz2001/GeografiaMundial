@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Geografía Mundial v3</title>
+        <title>Geografía Mundial v4.1</title>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
         <link rel="stylesheet" href="style.css">
     </head>
@@ -11,7 +11,7 @@
         <main>
             <header>
                 <h1>🌎 Geografía Mundial</h1>
-                <p>Encuentra países y capitales · 197 países</p>
+                <p>Encuentra países, capitales y lugares emblemáticos · 197 países</p>
             </header>
             <!-- Google Analytics - Geografía Mundial -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G4M6NY4GVC"></script>
@@ -46,6 +46,9 @@
                     <span id="score">0 puntos</span>
                 </div>
                 <h2 id="question">Preparando preguntas...</h2>
+                <div id="panel-foto" hidden>
+                    <img id="imagen-lugar" alt="Lugar emblemático que debes localizar" width="600" height="400">
+                </div>
                 <p id="limit"></p>
                 <div id="map"></div>
                 <div id="feedback" aria-live="polite">Cargando mapa...</div>

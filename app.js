@@ -1,15 +1,11 @@
 import { guardarResultado, consultarRanking } from './firebase.js';
 'use strict';
 
- 
-
 // GEOGRAFÍA MUNDIAL — DESAFÍO MUNDIAL
 
 // Cada etapa contiene 3 preguntas fáciles, 2 intermedias y 1 difícil.
 
 // Requiere paises.json junto a index.html, style.css y app.js.
-
- 
 
 const $ = id => document.getElementById(id);
 
@@ -31,8 +27,6 @@ const BONO_ETAPA = 500;
 
 const ETAPAS_POR_BLOQUE = 12; // 38 fáciles permiten 12 etapas sin repetir.
 
- 
-
 const map = L.map('map', {
 
     worldCopyJump: false,
@@ -43,8 +37,6 @@ const map = L.map('map', {
 
 }).setView([15, 0], 2);
 
- 
-
 // Mantiene la capa de OpenStreetMap que ya funciona sin clave API.
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -54,8 +46,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 
 }).addTo(map);
-
- 
 
 let paises = [];
 
@@ -88,8 +78,46 @@ let preguntasTotales = 0;
 let preguntaBandera = false;
 
 let preguntaCapitalTerritorio = false;
+let preguntaFoto = false;
+let lugarActual = null;
+let lugares = {};
+function descripcionLugar(p) {
+    const lugar = lugarActual;
+    return lugar?.nombre ? ` Lugar emblemático: ${lugar.nombre}${lugar.ciudad ? ' — ' + lugar.ciudad : ''}, ${p.pais}.` : ` Este lugar se encuentra en ${p.pais}.`;
+}
+const isoPais = p => String(p.iso || '').toLowerCase();
 
- 
+function tomarPaisFoto(grado) {
+    // Conserva la dificultad y evita repetir países de la bolsa.
+    const candidatos = bolsas[grado].filter(p => lugares[isoPais(p)]?.length > 0);
+    if (!candidatos.length) return null;
+    const elegido = candidatos[Math.floor(Math.random() * candidatos.length)];
+    bolsas[grado].splice(bolsas[grado].indexOf(elegido), 1);
+    const opciones = lugares[isoPais(elegido)];
+    lugarActual = opciones[Math.floor(Math.random() * opciones.length)];
+    return elegido;
+}
+
+function mostrarFoto() {
+    const panel = $('panel-foto');
+    const img = $('imagen-lugar');
+    panel.hidden = !preguntaFoto;
+    img.onerror = null;
+    img.removeAttribute('src');
+    if (!preguntaFoto) return;
+    const paisFoto = actual;
+    img.onerror = () => {
+        if (actual !== paisFoto || terminado || respondida || !preguntaFoto) return;
+        preguntaFoto = false;
+        panel.hidden = true;
+        $('question').textContent = `¿Dónde está ${actual.pais}?`;
+        // La pregunta de respaldo conserva el objetivo territorial.
+        preguntaCapitalTerritorio = false;
+        preguntaFotoRespaldo = true;
+    };
+    img.src = `./imagenes/${lugarActual.archivo}`;
+}
+let preguntaFotoRespaldo = false;
 
 function mezclar(lista) {
 
@@ -107,8 +135,6 @@ function mezclar(lista) {
 
 }
 
- 
-
 function distanciaKm(lat1, lon1, lat2, lon2) {
 
     const r = Math.PI / 180;
@@ -125,8 +151,6 @@ function distanciaKm(lat1, lon1, lat2, lon2) {
 
 }
 
- 
-
 function limpiarMarcas() {
 
     marcas.forEach(marca => map.removeLayer(marca));
@@ -134,8 +158,6 @@ function limpiarMarcas() {
     marcas = [];
 
 }
-
- 
 
 function guardarRecord() {
 
@@ -157,8 +179,6 @@ function guardarRecord() {
 
 }
 
- 
-
 function prepararBolsas() {
 
     bolsas = { 1: [], 2: [], 3: [] };
@@ -170,8 +190,6 @@ function prepararBolsas() {
     }
 
 }
-
- 
 
 function tomarPais(grado) {
 
@@ -189,13 +207,9 @@ function tomarPais(grado) {
 
 }
 
- 
-
 function crearProgreso() {
 
     if ($('progreso-etapa')) return;
-
- 
 
     const contenedor = document.createElement('div');
 
@@ -203,21 +217,15 @@ function crearProgreso() {
 
     contenedor.style.cssText = 'max-width:700px;margin:12px auto 18px;text-align:center;';
 
- 
-
     const titulo = document.createElement('div');
 
     titulo.id = 'progreso-titulo';
 
     titulo.style.cssText = 'font-weight:700;margin-bottom:8px;color:#eef5ff;';
 
- 
-
     const barra = document.createElement('div');
 
     barra.style.cssText = 'height:13px;background:#344765;border-radius:999px;overflow:hidden;';
-
- 
 
     const relleno = document.createElement('div');
 
@@ -227,15 +235,11 @@ function crearProgreso() {
 
     barra.appendChild(relleno);
 
- 
-
     const pasos = document.createElement('div');
 
     pasos.id = 'progreso-pasos';
 
     pasos.style.cssText = 'font-size:13px;margin-top:7px;color:#b8d2ff;';
-
- 
 
     contenedor.append(titulo, barra, pasos);
 
@@ -244,8 +248,6 @@ function crearProgreso() {
     preguntaElemento.parentNode.insertBefore(contenedor, preguntaElemento);
 
 }
-
- 
 
 function actualizarProgreso(completadas = pregunta) {
 
@@ -263,8 +265,6 @@ function actualizarProgreso(completadas = pregunta) {
 
 }
 
- 
-
 function crearContadorAciertos() {
 
     if ($('aciertos')) return;
@@ -279,15 +279,11 @@ function crearContadorAciertos() {
 
 }
 
- 
-
 function actualizarAciertos() {
 
     $('aciertos').textContent = `${aciertos} ${aciertos === 1 ? 'Acierto' : 'Aciertos'}`;
 
 }
-
- 
 
 function crearIndicadorRecord() {
 
@@ -303,8 +299,6 @@ function crearIndicadorRecord() {
 
 }
 
- 
-
 function leerRecord() {
 
     try {
@@ -319,8 +313,6 @@ function leerRecord() {
 
 }
 
- 
-
 function actualizarRecord() {
 
     const mejor = Math.max(leerRecord(), puntos);
@@ -328,8 +320,6 @@ function actualizarRecord() {
     $('record').textContent = `🏆 Récord: ${mejor.toLocaleString('es-MX')}`;
 
 }
-
- 
 
 function actualizarMarcadores() {
 
@@ -343,9 +333,7 @@ function actualizarMarcadores() {
 
 }
 
- 
-
-// Cada ciclo de 8 preguntas contiene 6 normales, 1 bandera y 1 capital.
+// Cada ciclo de 9 preguntas contiene 6 normales, 1 bandera, 1 capital y 1 fotografía si hay disponible.
 
 function crearPanelBandera() {
 
@@ -373,8 +361,6 @@ function crearPanelBandera() {
 
 }
 
- 
-
 function mostrarBandera() {
 
     const panel = $('panel-bandera');
@@ -401,8 +387,6 @@ function mostrarBandera() {
 
 }
 
- 
-
 function mostrarPregunta() {
 
     limpiarMarcas();
@@ -411,11 +395,15 @@ function mostrarPregunta() {
 
     $('next').disabled = true;
 
- 
-
     const grado = SECUENCIA[pregunta];
 
-    actual = tomarPais(grado);
+    preguntasTotales++;
+    const posicionCiclo = (preguntasTotales - 1) % 9 + 1;
+    preguntaFotoRespaldo = false;
+    lugarActual = null;
+    const candidatoFoto = posicionCiclo === 9 ? tomarPaisFoto(grado) : null;
+    preguntaFoto = Boolean(candidatoFoto);
+    actual = candidatoFoto || tomarPais(grado);
 
     if (!actual) {
 
@@ -425,17 +413,9 @@ function mostrarPregunta() {
 
     }
 
- 
-
-    preguntasTotales++;
-
-    const posicionCiclo = (preguntasTotales - 1) % 8 + 1;
-
     preguntaBandera = posicionCiclo === 7;
 
     preguntaCapitalTerritorio = posicionCiclo === 8;
-
- 
 
     $('level').textContent = `Etapa ${etapa}: ${modo === 'pais' ? 'Países' : 'Capitales'}`;
 
@@ -445,9 +425,9 @@ function mostrarPregunta() {
 
     actualizarProgreso();
 
- 
-
-    $('question').textContent = preguntaBandera
+    $('question').textContent = preguntaFoto
+        ? '¿En qué país se encuentra este lugar?'
+        : preguntaBandera
 
         ? '¿Dónde está el territorio de esta bandera?'
 
@@ -462,20 +442,17 @@ function mostrarPregunta() {
                 : `¿Dónde está ${actual.capital}, ${actual.pais}?`;
 
     mostrarBandera();
-
- 
+    mostrarFoto();
 
     // Las preguntas de bandera buscan el país, incluso en etapas de capitales.
 
-    const limite = LIMITES[preguntaBandera || preguntaCapitalTerritorio ? 'pais' : modo][grado];
+    const limite = LIMITES[preguntaBandera || preguntaCapitalTerritorio || preguntaFoto || preguntaFotoRespaldo ? 'pais' : modo][grado];
 
     $('limit').textContent = `Distancia máxima: ${limite.toLocaleString('es-MX')} km`;
 
     $('feedback').textContent = 'Haz clic sobre el mapa para responder.';
 
 }
-
- 
 
 function finalizar(mensaje) {
 
@@ -488,6 +465,7 @@ function finalizar(mensaje) {
     $('question').textContent = mensaje;
 
     $('panel-bandera').style.display = 'none';
+    $('panel-foto').hidden = true;
 
     $('limit').textContent = `Puntuación final: ${puntos.toLocaleString('es-MX')}`;
 
@@ -500,19 +478,15 @@ function finalizar(mensaje) {
 
 }
 
- 
-
 function responder(evento) {
 
     if (respondida || terminado || !actual) return;
 
     respondida = true;
 
- 
-
     const grado = SECUENCIA[pregunta];
 
-    const tipoUbicacion = (preguntaBandera || preguntaCapitalTerritorio) ? 'pais' : modo;
+    const tipoUbicacion = (preguntaBandera || preguntaCapitalTerritorio || preguntaFoto || preguntaFotoRespaldo) ? 'pais' : modo;
 
     const limite = LIMITES[tipoUbicacion][grado];
 
@@ -530,15 +504,11 @@ function responder(evento) {
 
     const ganados = acierto ? Math.round(1000 * (1 - km / limite)) : 0;
 
- 
-
     puntos += ganados;
 
     if (acierto) aciertos++;
 
     else vidas--;
-
- 
 
     marcas.push(L.circleMarker(respuesta, {
 
@@ -546,23 +516,17 @@ function responder(evento) {
 
     }).addTo(map).bindPopup('Tu respuesta'));
 
- 
-
     marcas.push(L.circleMarker(correcto, {
 
         radius: 9, color: '#12a150', fillOpacity: 1
 
     }).addTo(map).bindPopup(`Ubicación correcta: ${tipoUbicacion === 'pais' ? actual.pais : actual.capital}`));
 
- 
-
     marcas.push(L.polyline([respuesta, correcto], {
 
         color: '#ffb547', weight: 3, dashArray: '7 7'
 
     }).addTo(map));
-
- 
 
     $('feedback').textContent = `${acierto ? '✅ ¡Acertaste!' : '❌ Demasiado lejos.'} ` +
 
@@ -572,9 +536,8 @@ function responder(evento) {
 
         (preguntaBandera ? ` La bandera corresponde a ${actual.pais}.` : '') +
 
-        (preguntaCapitalTerritorio ? ` ${actual.capital} es la capital de ${actual.pais}.` : '');
-
- 
+        (preguntaCapitalTerritorio ? ` ${actual.capital} es la capital de ${actual.pais}.` : '') +
+        (preguntaFoto ? descripcionLugar(actual) : '');
 
     guardarRecord();
 
@@ -582,11 +545,14 @@ function responder(evento) {
 
     actualizarProgreso(pregunta + 1);
 
- 
-
     if (vidas === 0) {
 
+        const respuestaFinal = $('feedback').textContent;
         finalizar('¡Fin de la partida!');
+        if (preguntaFoto) {
+            $('panel-foto').hidden = false;
+            $('feedback').textContent = respuestaFinal + ' Pulsa «Reiniciar partida» para jugar otra vez.';
+        }
 
     } else {
 
@@ -596,15 +562,11 @@ function responder(evento) {
 
 }
 
- 
-
 function avanzar() {
 
     if (!respondida || terminado || vidas === 0) return;
 
     pregunta++;
-
- 
 
     if (pregunta === SECUENCIA.length) {
 
@@ -616,8 +578,6 @@ function avanzar() {
 
         let mensaje = `¡Etapa ${etapa} completada! +${BONO_ETAPA} puntos.`;
 
- 
-
         if (etapasCompletadas % 5 === 0 && vidas < MAX_VIDAS) {
 
             vidas++;
@@ -626,13 +586,9 @@ function avanzar() {
 
         }
 
- 
-
         etapa++;
 
         pregunta = 0;
-
- 
 
         // Tras 12 etapas de países pasamos a las capitales.
 
@@ -648,8 +604,6 @@ function avanzar() {
 
         }
 
- 
-
         // La partida termina tras 12 etapas de países y 12 de capitales.
 
         if (etapa > 24) {
@@ -660,8 +614,6 @@ function avanzar() {
 
         }
 
- 
-
         mostrarPregunta();
 
         $('feedback').textContent = mensaje;
@@ -670,13 +622,9 @@ function avanzar() {
 
     }
 
- 
-
     mostrarPregunta();
 
 }
-
- 
 
 function reiniciar() {
 
@@ -703,14 +651,15 @@ function reiniciar() {
     preguntaBandera = false;
 
     preguntaCapitalTerritorio = false;
+    preguntaFoto = false;
+    preguntaFotoRespaldo = false;
+    lugarActual = null;
 
     prepararBolsas();
 
     mostrarPregunta();
 
 }
-
- 
 
 async function iniciar() {
 
@@ -731,8 +680,6 @@ async function iniciar() {
         const datos = await respuesta.json();
 
         if (!Array.isArray(datos)) throw new Error('El archivo no contiene una lista de países.');
-
- 
 
         paises = datos.map(p => ({
 
@@ -758,14 +705,27 @@ async function iniciar() {
 
         );
 
- 
-
         if ([1, 2, 3].some(grado => !paises.some(p => p.grado === grado))) {
 
             throw new Error('Faltan países de alguna dificultad.');
 
         }
 
+        try {
+            const catalogo = await fetch('./lugares.json', { cache: 'no-store' });
+            if (!catalogo.ok) throw new Error(`HTTP ${catalogo.status}`);
+            const datosLugares = await catalogo.json();
+            if (!datosLugares || typeof datosLugares !== 'object' || Array.isArray(datosLugares)) throw new Error('Catálogo inválido');
+            lugares = Object.fromEntries(Object.entries(datosLugares)
+                .filter(([iso, lista]) => /^[a-z]{2}$/.test(iso) && Array.isArray(lista))
+                .map(([iso, lista]) => [iso, lista.filter(lugar =>
+                    lugar && typeof lugar.nombre === 'string' && lugar.nombre.trim() &&
+                    typeof lugar.archivo === 'string' &&
+                    new RegExp('^' + iso + '[0-9]{2,}\\.jpg$').test(lugar.archivo)
+                )]));
+        } catch (error) {
+            console.warn('No se pudo cargar lugares.json:', error);
+        }
         reiniciar();
 
     } catch (error) {
@@ -781,8 +741,6 @@ async function iniciar() {
     }
 
 }
-
- 
 
 map.on('click', responder);
 
