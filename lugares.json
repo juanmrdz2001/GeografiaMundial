@@ -6,6 +6,13 @@
       "ciudad": "Sídney"
     }
   ],
+  "ae": [
+    {
+      "archivo": "ae01.jpg",
+      "nombre": "Burj Khalifa",
+      "ciudad": "Dubái"
+    }
+  ],
   "br": [
     {
       "archivo": "br01.jpg",
@@ -27,11 +34,25 @@
       "ciudad": "Niagara Falls (frontera con Estados Unidos)"
     }
   ],
+    "cl": [
+    {
+      "archivo": "cl01.jpg",
+      "nombre": "Moáis de la Isla de Pascua",
+      "ciudad": "Isla de Pascua (Rapa Nui)"
+    }
+  ],
   "cn": [
     {
       "archivo": "cn01.jpg",
       "nombre": "Gran Muralla China",
       "ciudad": "Alrededores de Pekín"
+    }
+  ],
+  "de": [
+    {
+      "archivo": "de01.jpg",
+      "nombre": "Puerta de Brandeburgo",
+      "ciudad": "Berlín"
     }
   ],
   "eg": [
@@ -90,11 +111,53 @@
       "ciudad": ""
     }
   ],
+    "ke": [
+    {
+      "archivo": "ke01.jpg",
+      "nombre": "Parque Nacional de Amboseli",
+      "ciudad": "Condado de Kajiado"
+    }
+  ],
+  "ma": [
+    {
+      "archivo": "ma01.jpg",
+      "nombre": "Mezquita Hassan II",
+      "ciudad": "Casablanca , Marruecos"
+    }
+  ],
+  "mn": [
+    {
+      "archivo": "mn01.jpg",
+      "nombre": "Estatua ecuestre de Gengis Kan",
+      "ciudad": "Tsonjin Boldog , Mongolia"
+    }
+  ],
   "mx": [
     {
       "archivo": "mx01.jpg",
       "nombre": "Chichén Itzá",
       "ciudad": "Yucatán"
+    }
+  ],
+  "my": [
+    {
+      "archivo": "my01.jpg",
+      "nombre": "Torres Petronas",
+      "ciudad": "Kuala Lumpur , Malasia"
+    }
+  ],
+  "ru": [
+    {
+      "archivo": "ru01.jpg",
+      "nombre": "Catedral de San Basilio",
+      "ciudad": "Moscú"
+    }
+  ],
+  "pa": [
+    {
+      "archivo": "pa01.jpg",
+      "nombre": "Canal de Panamá",
+      "ciudad": "Entre Ciudad de Panamá y Colón"
     }
   ],
   "pe": [
