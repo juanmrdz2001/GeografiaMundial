@@ -13,6 +13,13 @@
       "ciudad": "Río de Janeiro"
     }
   ],
+  "gb": [
+    {
+      "archivo": "gb01.jpg",
+      "nombre": "Big Ben",
+      "ciudad": "Londres"
+    }
+  ],
   "ca": [
     {
       "archivo": "ca01.jpg",
